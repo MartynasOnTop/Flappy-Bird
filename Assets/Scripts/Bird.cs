@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Bird : MonoBehaviour
 {
@@ -21,5 +22,15 @@ public class Bird : MonoBehaviour
         }
 
         transform.eulerAngles = new Vector3(0, 0, rb.velocity.y * rotatePower);
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        Die();
+    }
+    void Die()
+    {
+        var sceneName = SceneManager.GetActiveScene().name;
+        SceneManager.LoadScene(sceneName);
     }
 }
