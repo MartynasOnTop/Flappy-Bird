@@ -2,12 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class Bird : MonoBehaviour
 {
     public float jumpSpeed;
     public float rotatePower;
+    public int score = 0;
     Rigidbody2D rb;
+
+    public TMP_Text Points;
 
     private void Start()
     {
@@ -32,5 +36,12 @@ public class Bird : MonoBehaviour
     {
         var sceneName = SceneManager.GetActiveScene().name;
         SceneManager.LoadScene(sceneName);
+        score = 0;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        score += 1;
+        Points.text = score.ToString();
     }
 }
