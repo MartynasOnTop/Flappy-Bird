@@ -19,7 +19,15 @@ public class Bird : MonoBehaviour
     public GameObject day;
     public GameObject night;
 
+    public GameObject flash;
+
     public float speed;
+
+    public AudioSource die;
+    public AudioSource hit;
+    public AudioSource flap;
+    public AudioSource swoosh;
+    public AudioSource point;
 
     public TMP_Text Points;
 
@@ -28,22 +36,7 @@ public class Bird : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         Pipe.speed = speed;
         endScreen.SetActive(false);
-
-        if (Random.Range(1, 3) == 1)
-        {
-            blueBird.SetActive(true);
-            day.SetActive(true);
-        }
-        else if (Random.Range(1, 3) == 2)
-        {
-            redBird.SetActive(true);
-            night.SetActive(true);
-        }
-        else
-        {
-            yellowBird.SetActive(true);
-            day.SetActive(true);
-        }
+        score = 0;
     }
 
     private void Update()
@@ -51,6 +44,7 @@ public class Bird : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             rb.velocity = Vector2.up * jumpSpeed;
+            flap.Play();
         }
 
         transform.eulerAngles = new Vector3(0, 0, rb.velocity.y * rotatePower);
@@ -70,7 +64,13 @@ public class Bird : MonoBehaviour
         Invoke("ShowMenu", 1f);
         //var sceneName = SceneManager.GetActiveScene().name;
         //SceneManager.LoadScene(sceneName);
-        score = 0;
+
+        PlayerPrefs.SetInt("Score", score);
+
+        flash.SetActive(true);
+
+        die.Play();
+        hit.Play();
     }
 
     void ShowMenu()
@@ -83,6 +83,7 @@ public class Bird : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         score += 1;
+        point.Play();
         Points.text = score.ToString();
     }
 }
